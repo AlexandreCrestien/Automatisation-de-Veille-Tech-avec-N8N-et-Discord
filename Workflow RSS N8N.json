@@ -1,0 +1,352 @@
+{
+  "name": "Workflow RSS N8N",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "694a8a4e-165f-4558-a40e-05c684954c65",
+              "leftValue": "={{ new Date(Date.now() - 24 * 60 * 60 * 1000) }}",
+              "rightValue": "={{ $json.pubDate }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "before"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        320,
+        -144
+      ],
+      "id": "5d6fac9f-af1b-4037-8de6-1077894be52b",
+      "name": "Filter4"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 12
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -832,
+        -128
+      ],
+      "id": "2698638c-ba62-4112-90dd-b3481e9c8831",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5d02c604-75ae-4b44-9b58-91074558c843",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "38a28b32-33b8-40f7-b022-71f00faa0ad8",
+              "name": "link",
+              "value": "={{ $json.link }}",
+              "type": "string"
+            },
+            {
+              "id": "9d2164a9-92a1-4baf-adb3-94a06bd4295d",
+              "name": "contentSnippet",
+              "value": "={{ String($json.contentSnippet || 'Pas de résumé').replace(/\\n/g, ' ').replace(/\\r/g, ' ').replace(/\"/g, \"'\").slice(0, 300) }}",
+              "type": "string"
+            },
+            {
+              "id": "ad54f701-b330-4635-801b-fe0599fbb627",
+              "name": "isoDate",
+              "value": "={{ $json.isoDate }}",
+              "type": "string"
+            },
+            {
+              "id": "2a3edd5b-ff47-45c2-b444-7fc4b6c0a876",
+              "name": "creator",
+              "value": "={{ $json.creator }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        576,
+        -144
+      ],
+      "id": "5307c6af-7f6b-4f83-94c2-1c4e90319892",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "numberInputs": 5
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        96,
+        -192
+      ],
+      "id": "f9b8e04f-aaee-496e-8e10-a1f7a4d71212",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "url": "https://www.stat4decision.com/fr/feed/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -336,
+        -384
+      ],
+      "id": "06385c95-f57f-429e-969c-ddc71221b0cc",
+      "name": "stat4decision.com",
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "url": "https://medium.com/feed/tag/data-engineering",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -336,
+        -240
+      ],
+      "id": "589bbbe3-11e1-4546-b9e1-d63542850ff3",
+      "name": "medium.com"
+    },
+    {
+      "parameters": {
+        "url": "https://blog.octo.com/feed/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -336,
+        -96
+      ],
+      "id": "16ba31da-223d-4edd-b78b-a89c60b3f5cf",
+      "name": "blog.octo.com"
+    },
+    {
+      "parameters": {
+        "url": "https://practicaldataengineering.substack.com/feed",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -336,
+        64
+      ],
+      "id": "21115e11-2ef3-455f-8b66-a9b828157e2f",
+      "name": "practicaldataengineering.substack.com"
+    },
+    {
+      "parameters": {
+        "url": "https://towardsdatascience.com/feed",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -336,
+        208
+      ],
+      "id": "9df0ce67-5e9f-4810-b8f9-1c07e4f345d3",
+      "name": "towardsdatascience.com"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://discordapp.com/api/webhooks/1480180275441831989/6D4AslL12BLxCJ0CGQr7Kisb4ZVwJrlIC08IHrOOwJJOgPtbR1pQc1cqMc35KCo0taJt",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"embeds\": [\n    {\n      \"title\": \"{{$json.title}}\",\n      \"description\": \"{{ $json.contentSnippet }}\",\n      \"url\": \"{{$json.link}}\",\n      \"timestamp\": \"{{$json.isoDate}}\",\n      \"author\": {\n        \"name\": \"{{$json.creator}}\"\n      }\n    }\n  ]\n}",
+        "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        816,
+        -144
+      ],
+      "id": "d7454712-e061-4fed-aa79-cebf0609e7f5",
+      "name": "HTTP Request"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "stat4decision.com",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "medium.com",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "blog.octo.com",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "practicaldataengineering.substack.com",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "towardsdatascience.com",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter4": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Filter4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "stat4decision.com": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "medium.com": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "blog.octo.com": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "practicaldataengineering.substack.com": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "towardsdatascience.com": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "c0823b8c-418d-46cb-9646-6d72bd1d5ae5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "20d2c0ac6e8212dbf985d165f3d3ae3c950d1ca55882ea85796b45fb3ec4f115"
+  },
+  "id": "GD1zw51gcpknVyoB",
+  "tags": []
+}

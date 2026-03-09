@@ -55,70 +55,36 @@
     },
     {
       "parameters": {
-        "authentication": "webhook",
-        "options": {
-          "wait": true
-        },
-        "embeds": {
-          "values": [
-            {
-              "description": "={{ $json.contentSnippet }}",
-              "author": "={{ $json.creator }}",
-              "timestamp": "={{ $json.isoDate }}",
-              "title": "={{ $json.title }}",
-              "url": "={{ $json.link }}"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.discord",
-      "typeVersion": 2,
-      "position": [
-        784,
-        -144
-      ],
-      "id": "00168c39-ce90-47f7-b8dd-76ff3e68a56b",
-      "name": "Discord",
-      "webhookId": "a405e0ce-0f0a-46d8-ae62-b0f2b2008bf9",
-      "credentials": {
-        "discordWebhookApi": {
-          "id": "En2BQsJQT0zRvWgW",
-          "name": "Discord Webhook account"
-        }
-      }
-    },
-    {
-      "parameters": {
         "assignments": {
           "assignments": [
             {
-              "id": "a63aaa07-0197-45e7-9658-0314345baa0c",
+              "id": "5d02c604-75ae-4b44-9b58-91074558c843",
               "name": "title",
               "value": "={{ $json.title }}",
               "type": "string"
             },
             {
-              "id": "009e316b-014d-48b2-8c48-1a41e8fdf5f3",
+              "id": "38a28b32-33b8-40f7-b022-71f00faa0ad8",
               "name": "link",
               "value": "={{ $json.link }}",
               "type": "string"
             },
             {
-              "id": "866f6535-29f9-4901-9a7f-95c9f60e6052",
+              "id": "9d2164a9-92a1-4baf-adb3-94a06bd4295d",
               "name": "contentSnippet",
-              "value": "={{ $json.contentSnippet }}",
+              "value": "={{ String($json.contentSnippet || 'Pas de résumé').replace(/\\n/g, ' ').replace(/\\r/g, ' ').replace(/\"/g, \"'\").slice(0, 300) }}",
               "type": "string"
             },
             {
-              "id": "787f0fe0-bd0d-4791-8cae-58f1dd4f0a06",
-              "name": "creator",
-              "value": "={{ $json.creator }}",
-              "type": "string"
-            },
-            {
-              "id": "4b19bfba-e3c9-41f2-95c8-898401af155a",
+              "id": "ad54f701-b330-4635-801b-fe0599fbb627",
               "name": "isoDate",
               "value": "={{ $json.isoDate }}",
+              "type": "string"
+            },
+            {
+              "id": "2a3edd5b-ff47-45c2-b444-7fc4b6c0a876",
+              "name": "creator",
+              "value": "={{ $json.creator }}",
               "type": "string"
             }
           ]
@@ -217,6 +183,30 @@
       ],
       "id": "9df0ce67-5e9f-4810-b8f9-1c07e4f345d3",
       "name": "towardsdatascience.com"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://discordapp.com/api/webhooks/1480180275441831989/6D4AslL12BLxCJ0CGQr7Kisb4ZVwJrlIC08IHrOOwJJOgPtbR1pQc1cqMc35KCo0taJt",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"embeds\": [\n    {\n      \"title\": \"{{$json.title}}\",\n      \"description\": \"{{ $json.contentSnippet }}\",\n      \"url\": \"{{$json.link}}\",\n      \"timestamp\": \"{{$json.isoDate}}\",\n      \"author\": {\n        \"name\": \"{{$json.creator}}\"\n      }\n    }\n  ]\n}",
+        "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        816,
+        -144
+      ],
+      "id": "d7454712-e061-4fed-aa79-cebf0609e7f5",
+      "name": "HTTP Request"
     }
   ],
   "pinData": {},
@@ -267,7 +257,7 @@
       "main": [
         [
           {
-            "node": "Discord",
+            "node": "HTTP Request",
             "type": "main",
             "index": 0
           }
@@ -339,6 +329,11 @@
           }
         ]
       ]
+    },
+    "HTTP Request": {
+      "main": [
+        []
+      ]
     }
   },
   "active": false,
@@ -347,7 +342,7 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "428b24b4-11f6-4157-af74-22431a2da14d",
+  "versionId": "c0823b8c-418d-46cb-9646-6d72bd1d5ae5",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "20d2c0ac6e8212dbf985d165f3d3ae3c950d1ca55882ea85796b45fb3ec4f115"

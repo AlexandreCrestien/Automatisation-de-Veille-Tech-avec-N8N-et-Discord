@@ -48,14 +48,17 @@ Le rapport généré est ensuite :
 cd n8n-compose
 ```
 
+## Lancer n8n avec Docker Compose
 ```
 docker compose up -d
 ```
+## L'interface n8n sera disponible à l'adresse
+```
+http://localhost:5678/
+```
+
+## Arrêter le projet
 
 ```
 docker compose down
-```
-
-```
-http://localhost:5678/
 ```
